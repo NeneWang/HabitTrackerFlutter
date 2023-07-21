@@ -118,6 +118,13 @@ class _HomePageState extends State<HomePage> {
     db.updateDatabase(currentDate);
   }
 
+  void toggleDate(DateTime dateTime) {
+    setState(() {
+      currentDate = dateTime;
+    });
+    db.loadData(currentDate);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -129,8 +136,18 @@ class _HomePageState extends State<HomePage> {
           MonthlySummary(
             datasets: db.heatMapDataSet,
             startDate: _myBox.get("START_DATE"),
+            toggleDate: toggleDate,
           ),
-
+          // Show the date
+          Center(
+            child: Text(
+              currentDate.toString().substring(0, 10),
+              style: const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
           // list of habits
           ListView.builder(
             shrinkWrap: true,

@@ -14,8 +14,9 @@ class HabitDatabase {
       ["Run", false],
       ["Read", false],
     ];
-
-    _myBox.put("START_DATE", todaysDateFormatted(DateTime.now()));
+    // 1 week ago so that you can create some shanangans into the past
+    DateTime weekago = DateTime.now().subtract(Duration(days: 7));
+    _myBox.put("START_DATE", todaysDateFormatted(weekago));
   }
 
   // load data if it already exists
@@ -63,6 +64,8 @@ class HabitDatabase {
 
     // key: "PERCENTAGE_SUMMARY_yyyymmdd"
     // value: string of 1dp number between 0.0-1.0 inclusive
+    print(
+        "Calculated ${percent.toString()} for ${todaysDateFormatted(toggledDate)}");
     _myBox.put(
         "PERCENTAGE_SUMMARY_${todaysDateFormatted(toggledDate)}", percent);
   }

@@ -5,11 +5,13 @@ import 'package:habittrackertute/datetime/date_time.dart';
 class MonthlySummary extends StatelessWidget {
   final Map<DateTime, int>? datasets;
   final String startDate;
+  final Function toggleDate;
 
   const MonthlySummary({
     super.key,
     required this.datasets,
     required this.startDate,
+    required this.toggleDate,
   });
 
   @override
@@ -40,8 +42,13 @@ class MonthlySummary extends StatelessWidget {
           10: Color.fromARGB(255, 2, 179, 8),
         },
         onClick: (value) {
-          ScaffoldMessenger.of(context)
-              .showSnackBar(SnackBar(content: Text(value.toString())));
+          toggleDate(value);
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(value.toString()),
+              duration: Duration(milliseconds: 200),
+            ),
+          );
         },
       ),
     );
