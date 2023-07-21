@@ -15,13 +15,13 @@ class HabitDatabase {
       ["Read", false],
     ];
 
-    _myBox.put("START_DATE", todaysDateFormatted());
+    _myBox.put("START_DATE", todaysDateFormatted(DateTime.now()));
   }
 
   // load data if it already exists
-  void loadData() {
+  void loadData(DateTime toggledDate) {
     // if it's a new day, get habit list from database
-    if (_myBox.get(todaysDateFormatted()) == null) {
+    if (_myBox.get(todaysDateFormatted(toggledDate)) == null) {
       todaysHabitList = _myBox.get("CURRENT_HABIT_LIST");
       // set all habit completed to false since it's a new day
       for (int i = 0; i < todaysHabitList.length; i++) {
@@ -30,26 +30,26 @@ class HabitDatabase {
     }
     // if it's not a new day, load todays list
     else {
-      todaysHabitList = _myBox.get(todaysDateFormatted());
+      todaysHabitList = _myBox.get(todaysDateFormatted(toggledDate));
     }
   }
 
   // update database
-  void updateDatabase() {
+  void updateDatabase(DateTime toggledDate) {
     // update todays entry
-    _myBox.put(todaysDateFormatted(), todaysHabitList);
+    _myBox.put(todaysDateFormatted(toggledDate), todaysHabitList);
 
     // update universal habit list in case it changed (new habit, edit habit, delete habit)
     _myBox.put("CURRENT_HABIT_LIST", todaysHabitList);
 
     // calculate habit complete percentages for each day
-    calculateHabitPercentages();
+    calculateHabitPercentages(toggledDate);
 
     // load heat map
     loadHeatMap();
   }
 
-  void calculateHabitPercentages() {
+  void calculateHabitPercentages(DateTime toggledDate) {
     int countCompleted = 0;
     for (int i = 0; i < todaysHabitList.length; i++) {
       if (todaysHabitList[i][1] == true) {
@@ -63,7 +63,8 @@ class HabitDatabase {
 
     // key: "PERCENTAGE_SUMMARY_yyyymmdd"
     // value: string of 1dp number between 0.0-1.0 inclusive
-    _myBox.put("PERCENTAGE_SUMMARY_${todaysDateFormatted()}", percent);
+    _myBox.put(
+        "PERCENTAGE_SUMMARY_${todaysDateFormatted(toggledDate)}", percent);
   }
 
   void loadHeatMap() {

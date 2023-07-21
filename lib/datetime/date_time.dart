@@ -1,7 +1,7 @@
 // return todays date formatted as yyyymmdd
-String todaysDateFormatted() {
+String todaysDateFormatted(DateTime toggledDate) {
   // today
-  var dateTimeObject = DateTime.now();
+  var dateTimeObject = toggledDate;
 
   // year in the format yyyy
   String year = dateTimeObject.year.toString();

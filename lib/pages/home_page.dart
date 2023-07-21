@@ -16,6 +16,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   HabitDatabase db = HabitDatabase();
   final _myBox = Hive.box("Habit_Database");
+  DateTime currentDate = DateTime.now();
 
   @override
   void initState() {
@@ -27,11 +28,11 @@ class _HomePageState extends State<HomePage> {
 
     // there already exists data, this is not the first time
     else {
-      db.loadData();
+      db.loadData(currentDate);
     }
 
     // update the database
-    db.updateDatabase();
+    db.updateDatabase(currentDate);
 
     super.initState();
   }
@@ -41,7 +42,7 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       db.todaysHabitList[index][1] = value;
     });
-    db.updateDatabase();
+    db.updateDatabase(currentDate);
   }
 
   // create a new habit
@@ -72,7 +73,7 @@ class _HomePageState extends State<HomePage> {
     _newHabitNameController.clear();
     // pop dialog box
     Navigator.of(context).pop();
-    db.updateDatabase();
+    db.updateDatabase(currentDate);
   }
 
   // cancel new habit
@@ -106,7 +107,7 @@ class _HomePageState extends State<HomePage> {
     });
     _newHabitNameController.clear();
     Navigator.pop(context);
-    db.updateDatabase();
+    db.updateDatabase(currentDate);
   }
 
   // delete habit
@@ -114,7 +115,7 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       db.todaysHabitList.removeAt(index);
     });
-    db.updateDatabase();
+    db.updateDatabase(currentDate);
   }
 
   @override
